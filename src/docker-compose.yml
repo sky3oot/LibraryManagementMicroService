@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  bookdb:
+    image: mongo
+
+  loandb:
+    image: mongo
+
+  portainer:
+    image: portainer/portainer-ce
+
+  demorest.api:
+    image: ${DOCKER_REGISTRY-}demorestapi
+    build:
+      context: .
+      dockerfile: Services/BookManagement/DemoRest.API/Dockerfile
+
+  demoresttest.api:
+    image: ${DOCKER_REGISTRY-}demoresttestapi
+    build:
+      context: .
+      dockerfile: Services/BookLoanManagement/DemoRestTest.API/Dockerfile
+
+volumes:
+  mongo_data:
+  portainer_data:
+

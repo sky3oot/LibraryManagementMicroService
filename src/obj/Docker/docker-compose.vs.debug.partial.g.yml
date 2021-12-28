@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  demorest.api:
+    image: demorestapi:dev
+    container_name: DemoRest.API
+    build:
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "DemoRest.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_demorest.api$
+    volumes:
+      - C:\Users\Dell\source\repos\LibraryManagementMicroService\src\Services\BookManagement\DemoRest.API:/app
+      - C:\Users\Dell\source\repos\LibraryManagementMicroService\src:/src
+      - C:\Users\Dell\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_demorest.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_demorest.api$ \"/app/bin/Debug/netcoreapp3.1/DemoRest.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+  demoresttest.api:
+    image: demoresttestapi:dev
+    container_name: DemoRestTest.API
+    build:
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "DemoRestTest.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_demoresttest.api$
+    volumes:
+      - C:\Users\Dell\source\repos\LibraryManagementMicroService\src\Services\BookLoanManagement\DemoRestTest.API:/app
+      - C:\Users\Dell\source\repos\LibraryManagementMicroService\src:/src
+      - C:\Users\Dell\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_demoresttest.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_demoresttest.api$ \"/app/bin/Debug/netcoreapp3.1/DemoRestTest.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true

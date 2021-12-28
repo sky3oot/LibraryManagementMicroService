@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+ bookdb:
+    container_name: bookdb
+    restart: always
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo_data:/data/bookdb
+
+ loandb:
+    container_name: loandb
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/loandb
+
+ portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "8080:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+
+ demorest.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "AppSettings:MongoServerName=mongodb://bookdb:27017"
+    depends_on:
+      - bookdb
+    ports:
+      - "5008:80"
+
+ demoresttest.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "AppSettings:MongoServerName=mongodb://loandb:27017"
+     
+    depends_on:
+      - loandb
+    ports:
+      - "5007:80"
+  

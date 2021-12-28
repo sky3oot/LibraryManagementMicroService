@@ -1,0 +1,30 @@
+services:
+  demorest.api:
+    build:
+      context: C:\Users\Dell\source\repos\LibraryManagementMicroService\src
+      dockerfile: Services/BookManagement/DemoRest.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: demorestapi
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Dell\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Dell\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  demoresttest.api:
+    build:
+      context: C:\Users\Dell\source\repos\LibraryManagementMicroService\src
+      dockerfile: Services/BookLoanManagement/DemoRestTest.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: demoresttestapi
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Dell\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Dell\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

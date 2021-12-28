@@ -1,0 +1,67 @@
+services:
+  bookdb:
+    container_name: bookdb
+    image: mongo
+    ports:
+    - published: 27017
+      target: 27017
+    restart: always
+    volumes:
+    - mongo_data:/data/db:rw
+  demorest.api:
+    build:
+      context: C:\Users\Dell\source\repos\LibraryManagementMicroService\src
+      dockerfile: Services/BookManagement/DemoRest.API/Dockerfile
+    depends_on:
+      bookdb:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      AppSettings:MongoServerName: mongodb://bookdb:27017
+    image: demorestapi
+    ports:
+    - published: 5008
+      target: 80
+    volumes:
+    - C:\Users\Dell\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+  demoresttest.api:
+    build:
+      context: C:\Users\Dell\source\repos\LibraryManagementMicroService\src
+      dockerfile: Services/BookLoanManagement/DemoRestTest.API/Dockerfile
+    depends_on:
+      loandb:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      AppSettings:MongoServerName: mongodb://loandb:27017
+    image: demoresttestapi
+    ports:
+    - published: 5007
+      target: 80
+    volumes:
+    - C:\Users\Dell\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+  loandb:
+    container_name: loandb
+    image: mongo
+    ports:
+    - published: 27017
+      target: 27017
+    restart: always
+    volumes:
+    - mongo_data:/data/db:rw
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    ports:
+    - published: 8080
+      target: 8000
+    - published: 9000
+      target: 9000
+    restart: always
+    volumes:
+    - portainer_data:/data:rw
+    - /var/run/docker.sock:/var/run/docker.sock:rw
+version: '3.4'
+volumes:
+  mongo_data: {}
+  portainer_data: {}
