@@ -11,6 +11,7 @@ namespace DemoRestTest.Abstraction.BookLoan.Model
         {
 
         }
+
         public Loan(LoanEntity entity)
         {
             this.Id = Id;
